@@ -19,17 +19,35 @@ namespace coreBookStore.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("coreBookStore.Models.Admin", b =>
+                {
+                    b.Property<int>("AdminId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AdminPassword");
+
+                    b.Property<string>("AdminUserName");
+
+                    b.HasKey("AdminId");
+
+                    b.ToTable("Admin");
+                });
+
             modelBuilder.Entity("coreBookStore.Models.Author", b =>
                 {
                     b.Property<int>("AuthorId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AuthorDescription");
+                    b.Property<string>("AuthorDescription")
+                        .IsRequired();
 
-                    b.Property<string>("AuthorImage");
+                    b.Property<string>("AuthorImage")
+                        .IsRequired();
 
-                    b.Property<string>("AuthorName");
+                    b.Property<string>("AuthorName")
+                        .IsRequired();
 
                     b.HasKey("AuthorId");
 
@@ -77,11 +95,14 @@ namespace coreBookStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("BookCategoryDescription");
+                    b.Property<string>("BookCategoryDescription")
+                        .IsRequired();
 
-                    b.Property<string>("BookCategoryImage");
+                    b.Property<string>("BookCategoryImage")
+                        .IsRequired();
 
-                    b.Property<string>("BookCategoryName");
+                    b.Property<string>("BookCategoryName")
+                        .IsRequired();
 
                     b.HasKey("BookCategoryId");
 
@@ -203,13 +224,20 @@ namespace coreBookStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("PublicationDescription");
+                    b.Property<int>("AdminId");
 
-                    b.Property<string>("PublicationImage");
+                    b.Property<string>("PublicationDescription")
+                        .IsRequired();
 
-                    b.Property<string>("PublicationName");
+                    b.Property<string>("PublicationImage")
+                        .IsRequired();
+
+                    b.Property<string>("PublicationName")
+                        .IsRequired();
 
                     b.HasKey("PublicationId");
+
+                    b.HasIndex("AdminId");
 
                     b.ToTable("Publications");
                 });
@@ -285,6 +313,14 @@ namespace coreBookStore.Migrations
                     b.HasOne("coreBookStore.Models.Order", "Order")
                         .WithOne("Payment")
                         .HasForeignKey("coreBookStore.Models.Payment", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("coreBookStore.Models.Publication", b =>
+                {
+                    b.HasOne("coreBookStore.Models.Admin", "Admin")
+                        .WithMany()
+                        .HasForeignKey("AdminId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -16,8 +16,7 @@ namespace coreBookStore.Controllers
         {
             _context = context;
         }
-
-        public ViewResult Details()
+        public ViewResult Index()
         {
             var auth = _context.Authors.ToList();
             return View(auth);
@@ -29,13 +28,21 @@ namespace coreBookStore.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Create(Author a1)
+        public ActionResult Create([Bind("AuthorName,AuthorDescription,AuthorImage")]Author a1)
         {
+            if (ModelState.IsValid)
+            {
+                _context.Authors.Add(a1);
+                _context.SaveChanges();
 
-            _context.Authors.Add(a1);
-            _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(a1);
+        }
 
-            return RedirectToAction("Index");
+        public object Details()
+        {
+            throw new NotImplementedException();
         }
 
         public ActionResult Details(int id)
@@ -70,16 +77,20 @@ namespace coreBookStore.Controllers
             return View(Authr);
         }
         [HttpPost]
-        public ActionResult Edit(Author a1)
+        public ActionResult Edit([Bind("AuthorName,AuthorDescription,AuthorImage")]Author a1)
         {
-            Author Authr = _context.Authors.Where
+            if (ModelState.IsValid)
+            {
+                Author Authr = _context.Authors.Where
                 (x => x.AuthorId == a1.AuthorId).SingleOrDefault();
-            _context.Entry(Authr).CurrentValues.SetValues(a1);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+                _context.Entry(Authr).CurrentValues.SetValues(a1);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(a1);
         }
 
-        public object Edit(int id, Author author)
+        public object Edit(int id, Author auth)
         {
             throw new NotImplementedException();
         }
