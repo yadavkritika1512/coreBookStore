@@ -8,6 +8,7 @@ using OnlineBookStoreUser.Models;
 
 namespace coreBookStore.Controllers
 {
+    [Route("Author")]
     public class AuthorController : Controller
     {
         private readonly BookStoreDbContext _context;
@@ -16,17 +17,19 @@ namespace coreBookStore.Controllers
         {
             _context = context;
         }
+        [Route("index")]
         public ViewResult Index()
         {
             var auth = _context.Authors.ToList();
             return View(auth);
         }
-
+        [Route("create")]
         [HttpGet]
         public ViewResult Create()
         {
             return View();
         }
+        [Route("create")]
         [HttpPost]
         public ActionResult Create([Bind("AuthorName,AuthorDescription,AuthorImage")]Author a1)
         {
@@ -40,24 +43,27 @@ namespace coreBookStore.Controllers
             return View(a1);
         }
 
+        [Route("details")]
         public object Details()
         {
             throw new NotImplementedException();
         }
 
+        [Route("details/{id}")]
         public ActionResult Details(int id)
         {
             Author Authr = _context.Authors.Where(x => x.AuthorId == id).SingleOrDefault();
             _context.SaveChanges();
             return View(Authr);
         }
-
+        [Route("delete")]
         [HttpGet]
         public ActionResult Delete(int id)
         {
             Author auth = _context.Authors.Find(id);
             return View(auth);
         }
+        [Route("delete/{id}")]
         [HttpPost]
         public ActionResult Delete(int id, Author d1)
         {
@@ -67,7 +73,7 @@ namespace coreBookStore.Controllers
             return RedirectToAction("Index");
 
         }
-
+        [Route("edit/{id}")]
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -76,6 +82,7 @@ namespace coreBookStore.Controllers
 
             return View(Authr);
         }
+        [Route("edit")]
         [HttpPost]
         public ActionResult Edit([Bind("AuthorName,AuthorDescription,AuthorImage")]Author a1)
         {

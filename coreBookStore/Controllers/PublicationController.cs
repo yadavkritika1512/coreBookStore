@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace coreBookStore.Controllers
 {
+    [Route("Publication")]
+
     public class PublicationController : Controller
     {
         private readonly BookStoreDbContext _context;
@@ -16,23 +18,26 @@ namespace coreBookStore.Controllers
         {
             _context = context;
         }
+        [Route("index")]
         public ViewResult Index()
         {
             var publications = _context.Publications.ToList();
             return View(publications);
         }
+        [Route("create")]
         [HttpGet]
         public ViewResult Create()
         {
             return View();
         }
+        [Route("create")]
         [HttpPost]
         public ActionResult Create([Bind("PublicationName,PublicationDescription,PublicationImage")]Publication p1)
         {
             if (ModelState.IsValid)
             {
                 HttpContext.Session.GetString("uname");
-                p1.AdminId = Convert.ToInt32(HttpContext.Session.GetString("id"));
+               
                 _context.Publications.Add(p1);
                 _context.SaveChanges();
 
@@ -40,13 +45,14 @@ namespace coreBookStore.Controllers
             }
             return View(p1);
         }
-
+        [Route("details")]
         public ActionResult Details(int id)
         {
             Publication Pub = _context.Publications.Where(x => x.PublicationId == id).SingleOrDefault();
             _context.SaveChanges();
             return View(Pub);
         }
+        [Route("delete")]
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -62,6 +68,7 @@ namespace coreBookStore.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -70,6 +77,7 @@ namespace coreBookStore.Controllers
 
             return View(Pub);
         }
+        [Route("edit")]
         [HttpPost]
         public ActionResult Edit([Bind("PublicationName,PublicationDescription,PublicationImage")]Publication p1)
         {

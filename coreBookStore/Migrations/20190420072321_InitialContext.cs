@@ -4,24 +4,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace coreBookStore.Migrations
 {
-    public partial class Initial77 : Migration
+    public partial class InitialContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Admin",
-                columns: table => new
-                {
-                    AdminId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AdminUserName = table.Column<string>(nullable: true),
-                    AdminPassword = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Admin", x => x.AdminId);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Authors",
                 columns: table => new
@@ -87,18 +73,11 @@ namespace coreBookStore.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     PublicationName = table.Column<string>(nullable: false),
                     PublicationDescription = table.Column<string>(nullable: false),
-                    PublicationImage = table.Column<string>(nullable: false),
-                    AdminId = table.Column<int>(nullable: false)
+                    PublicationImage = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Publications", x => x.PublicationId);
-                    table.ForeignKey(
-                        name: "FK_Publications_Admin_AdminId",
-                        column: x => x.AdminId,
-                        principalTable: "Admin",
-                        principalColumn: "AdminId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -285,11 +264,6 @@ namespace coreBookStore.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Publications_AdminId",
-                table: "Publications",
-                column: "AdminId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Review_BookId",
                 table: "Review",
                 column: "BookId");
@@ -328,9 +302,6 @@ namespace coreBookStore.Migrations
 
             migrationBuilder.DropTable(
                 name: "Publications");
-
-            migrationBuilder.DropTable(
-                name: "Admin");
         }
     }
 }

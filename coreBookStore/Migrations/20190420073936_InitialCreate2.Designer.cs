@@ -10,8 +10,8 @@ using coreBookStore.Models;
 namespace coreBookStore.Migrations
 {
     [DbContext(typeof(BookStoreDbContext))]
-    [Migration("20190418110136_Initial77")]
-    partial class Initial77
+    [Migration("20190420073936_InitialCreate2")]
+    partial class InitialCreate2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,21 +20,6 @@ namespace coreBookStore.Migrations
                 .HasAnnotation("ProductVersion", "2.1.8-servicing-32085")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("coreBookStore.Models.Admin", b =>
-                {
-                    b.Property<int>("AdminId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AdminPassword");
-
-                    b.Property<string>("AdminUserName");
-
-                    b.HasKey("AdminId");
-
-                    b.ToTable("Admin");
-                });
 
             modelBuilder.Entity("coreBookStore.Models.Author", b =>
                 {
@@ -226,8 +211,6 @@ namespace coreBookStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AdminId");
-
                     b.Property<string>("PublicationDescription")
                         .IsRequired();
 
@@ -238,8 +221,6 @@ namespace coreBookStore.Migrations
                         .IsRequired();
 
                     b.HasKey("PublicationId");
-
-                    b.HasIndex("AdminId");
 
                     b.ToTable("Publications");
                 });
@@ -315,14 +296,6 @@ namespace coreBookStore.Migrations
                     b.HasOne("coreBookStore.Models.Order", "Order")
                         .WithOne("Payment")
                         .HasForeignKey("coreBookStore.Models.Payment", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("coreBookStore.Models.Publication", b =>
-                {
-                    b.HasOne("coreBookStore.Models.Admin", "Admin")
-                        .WithMany()
-                        .HasForeignKey("AdminId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

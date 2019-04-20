@@ -8,6 +8,7 @@ using OnlineBookStoreUser.Models;
 
 namespace coreBookStore.Controllers
 {
+    [Route("BookCategory")]
     public class BookCategoryController : Controller
     {
         private readonly BookStoreDbContext _context;
@@ -16,16 +17,19 @@ namespace coreBookStore.Controllers
         {
             _context = context;
         }
+        [Route("index")]
         public ViewResult Index()
         {
             var caty = _context.BookCategories.ToList();
             return View(caty);
         }
+        [Route("create")]
         [HttpGet]
         public ViewResult Create()
         {
             return View();
         }
+        [Route("create")]
         [HttpPost]
         public ActionResult Create([Bind("BookCategoryName,BookCategoryDescription,BookCategoryImage")]BookCategory c1)
         {
@@ -38,6 +42,7 @@ namespace coreBookStore.Controllers
             }
             return View(c1);
         }
+        [Route("delete")]
         [HttpGet]
         public ActionResult Delete(int id)
         {
@@ -45,6 +50,7 @@ namespace coreBookStore.Controllers
 
             return View(caty);
         }
+        [Route("delete/{id}")]
         [HttpPost]
         public ActionResult Delete(int id, BookCategory c1)
         {
@@ -53,6 +59,7 @@ namespace coreBookStore.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        [Route("edit/{id}")]
         [HttpGet]
         public ActionResult Edit(int id)
         {
@@ -61,6 +68,7 @@ namespace coreBookStore.Controllers
 
             return View(caty);
         }
+        [Route("edit")]
         [HttpPost]
         public ActionResult Edit([Bind("BookCategoryName,BookCategoryDescription,BookCategoryImage")]BookCategory c1)
         {
@@ -73,6 +81,7 @@ namespace coreBookStore.Controllers
             }
             return View(c1);
         }
+        [Route("details")]
         public ActionResult Details(int id)
         {
             BookCategory caty = _context.BookCategories.Where(x => x.BookCategoryId == id).SingleOrDefault();
